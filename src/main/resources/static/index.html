@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<title>Insert title here</title>
+</head>
+<body>
+	<header>
+		<h1>Sistema de Usuario - CRUD</h1>
+	</header>
+	<main>
+		<br>
+		<form action="" id="cadastrarUsuario">
+			<fieldset disabled>
+			<label for="id-usuario" class="form-label">ID</label>
+			<input type="text" id="id-usuario" class="form-control" readonly="readonly">
+		</fieldset>
+			<br>
+			<label for="nome-usuario" class="form-label">Nome</label>
+			<input type="text" id="nome-usuario" class="form-control">
+			<br>
+			<label for="idade-usuario" class="form-label">Idade</label>
+			<input type="number" id="idade-usuario" class="form-control">
+			<br>
+			<button type="button" class="btn btn-primary" onclick="cadastrarUsuario();">Salvar</button>
+			<button type="button" class="btn btn-secondary" onclick="resetar();">Novo</button>
+		
+		</form>
+			
+	</main>
+	<footer></footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		function cadastrarUsuario(){
+			var id = $("#id-usuario").val();
+			var nome = $("#nome-usuario").val();
+			var idade = $("#idade-usuario").val();
+			
+			$.ajax({
+				method: "POST",
+				url: "cadastra-usuario",
+				data: JSON.stringify({id : id, nome : nome, idade : idade}),
+				contentType: "application/json; charset-utf-8",
+				
+				success: function(response){
+					$("#id-usuario").val(response.id);
+				 	alert("Usuário salvo com sucesso!");
+				}
+			}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao realizar cadastro!" + xhr.reponseText);
+			});
+		};
+		
+		function resetar(){
+			document.getElementById('cadastrarUsuario').reset();
+		};
+	</script>	
+
+</body>
+</html>

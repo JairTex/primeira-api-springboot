@@ -31,12 +31,6 @@ public class GreetingsController {
 	@Autowired // IC/CD ou CDI = Injeção de Dependencia
 	private UsuarioRepository usuarioRepository;
 
-	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public String greetingText(@PathVariable String name) {
-		return "Hello " + name + "!";
-	}
-
 	/*
 	 * @RequestMapping(value = "/cadastra-usuario/{name}", method =
 	 * RequestMethod.GET)
