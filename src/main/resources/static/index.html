@@ -2,7 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
 <title>Insert title here</title>
 </head>
 <body>
@@ -13,51 +17,161 @@
 		<br>
 		<form action="" id="cadastrarUsuario">
 			<fieldset disabled>
-			<label for="id-usuario" class="form-label">ID</label>
-			<input type="text" id="id-usuario" class="form-control" readonly="readonly">
-		</fieldset>
-			<br>
-			<label for="nome-usuario" class="form-label">Nome</label>
-			<input type="text" id="nome-usuario" class="form-control">
-			<br>
-			<label for="idade-usuario" class="form-label">Idade</label>
-			<input type="number" id="idade-usuario" class="form-control">
-			<br>
-			<button type="button" class="btn btn-primary" onclick="cadastrarUsuario();">Salvar</button>
-			<button type="button" class="btn btn-secondary" onclick="resetar();">Novo</button>
-		
+				<label for="id-usuario" class="form-label">ID</label> <input
+					type="text" id="id-usuario" class="form-control"
+					readonly="readonly">
+			</fieldset>
+			<br> <label for="nome-usuario" class="form-label">Nome</label> <input
+				type="text" id="nome-usuario" class="form-control"> <br>
+			<label for="idade-usuario" class="form-label">Idade</label> <input
+				type="number" id="idade-usuario" class="form-control"> <br>
+
 		</form>
-			
+
+		<button type="button" class="btn btn-primary"
+			onclick="cadastrarUsuario();">Salvar</button>
+		<button type="button" class="btn btn-secondary" onclick="resetar();">Novo</button>
+		
+		<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+			data-bs-target="#modalPesquisaUsuario">Pesquisar</button>
+
+		<!-- Modal -->
+		<div class="modal fade" id="modalPesquisaUsuario" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Pesquisa de
+							Usuario</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+
+							<div class="mb-3">
+								<label for="nomeBusca" class="col-form-label">Nome:</label> <input
+									type="text" class="form-control" id="nomeBusca"
+									placeholder="Digite o nome do usuario">
+							</div>
+							<button type="button" class="btn btn-secondary" onclick="buscarUsuario();">Buscar</button>
+
+						</form>
+						
+						<br>
+						
+						<table class="table" id="tabelaBusca">
+							<thead>
+								
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger"
+							data-bs-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</main>
 	<footer></footer>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	<script src="https://code.jquery.com/jquery-3.6.1.min.js" type="text/javascript"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+		type="text/javascript"></script>
+
 	<script type="text/javascript">
-		function cadastrarUsuario(){
+		function cadastrarUsuario() {
 			var id = $("#id-usuario").val();
 			var nome = $("#nome-usuario").val();
 			var idade = $("#idade-usuario").val();
-			
-			$.ajax({
-				method: "POST",
-				url: "cadastra-usuario",
-				data: JSON.stringify({id : id, nome : nome, idade : idade}),
-				contentType: "application/json; charset-utf-8",
-				
-				success: function(response){
-					$("#id-usuario").val(response.id);
-				 	alert("Usuário salvo com sucesso!");
-				}
-			}).fail(function(xhr, status, errorThrown) {
+
+			if(nome != null && nome.trim() != '' && idade >= 1){
+				$.ajax({
+					method : "POST",
+					url : "cadastra-usuario",
+					data : JSON.stringify({
+						id : id,
+						nome : nome,
+						idade : idade
+					}),
+					contentType : "application/json; charset-utf-8",
+
+					success : function(response) {
+						$("#id-usuario").val(response.id);
+						alert("Usuário salvo com sucesso!");
+					}
+				}).fail(function(xhr, status, errorThrown) {
 					alert("Erro ao realizar cadastro!" + xhr.reponseText);
-			});
+				});
+			}else {
+				alert("Verifique os dados!");
+			};
 		};
-		
-		function resetar(){
+
+		function resetar() {
 			document.getElementById('cadastrarUsuario').reset();
 		};
-	</script>	
+		
+		function buscarUsuario(){
+			var nome = $("#nomeBusca").val();
+			
+			if(nome != null && nome.trim() != ''){
+				$.ajax({
+					method : "GET", //definido em requestMapping
+					url : "buscar-usuario-nome", //value da url no springboot
+					data : "nomeUser=" + nome, //nome da variavel name
+					contentType : "application/json; charset-utf-8",
+
+					success : function(response) {
+						$("#tabelaBusca > thead > tr").remove();
+						
+						$("#tabelaBusca > thead").append('<tr  class="table-primary"><th scope="col">ID</th><th scope="col">Nome</th><th scope="col">Idade</th><th scope="col">Editar</th></tr>');
+						
+						$("#tabelaBusca > tbody > tr").remove();
+						
+						response.forEach(function(usuario){
+							$("#tabelaBusca > tbody").append("<tr>"  + "<th>" + usuario.id + "</th>" 
+									+ "<td>" + usuario.nome + "</td>"
+									+ "<td>" + usuario.idade + "</td>"
+									+ "<td>" + '<button type="button" onclick="editarUsuario( ' + usuario.id + ');" class="btn btn-success">Abrir</button>' + "</th>" + "</td>")
+						});
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao realizar cadastro!" + xhr.reponseText);
+				});
+			}else {
+				alert("Insira um nome na barra de pesquisa");
+			};
+		};
+		
+		function editarUsuario(id){
+			
+			$.ajax({
+				method : "GET", //definido em requestMapping
+				url : "buscar-usuario-id", //value da url no springboot
+				data : "idUser=" + id, //nome da variavel name
+				contentType : "application/json; charset-utf-8",
+
+				success : function(response) {
+						$("#id-usuario").val(response.id);
+						$("#nome-usuario").val(response.nome);
+						$("#idade-usuario").val(response.idade);
+						
+						$("#modalPesquisaUsuario").modal("hide");
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao realizar busca por id! " + xhr.reponseText);
+			});
+		};
+	</script>
 
 </body>
 </html>
