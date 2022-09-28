@@ -93,7 +93,13 @@
 			var nome = $("#nome-usuario").val();
 			var idade = $("#idade-usuario").val();
 
-			if(nome != null && nome.trim() != '' && idade >= 1){
+			if(nome == null || nome.trim() == '' ){
+				alert("Verifique o nome!");
+				$("#nome-usuario").focus();
+			}else if (idade < 1 || idade == null && idade.trim() == ''){
+				alert("Verifique a idade!");
+				$("#idade-usuario").focus();
+			}else{
 				$.ajax({
 					method : "POST",
 					url : "cadastra-usuario",
@@ -111,8 +117,6 @@
 				}).fail(function(xhr, status, errorThrown) {
 					alert("Erro ao realizar cadastro!" + xhr.reponseText);
 				});
-			}else {
-				alert("Verifique os dados!");
 			};
 		};
 
@@ -133,15 +137,17 @@
 					success : function(response) {
 						$("#tabelaBusca > thead > tr").remove();
 						
-						$("#tabelaBusca > thead").append('<tr  class="table-primary"><th scope="col">ID</th><th scope="col">Nome</th><th scope="col">Idade</th><th scope="col">Editar</th></tr>');
+						$("#tabelaBusca > thead").append('<tr  class="table-primary"><th scope="col">ID</th>'
+								+ '<th scope="col">Nome</th><th scope="col">Idade</th><th scope="col">Editar</th><th scope="col">Deletar</th></tr>');
 						
 						$("#tabelaBusca > tbody > tr").remove();
 						
 						response.forEach(function(usuario){
-							$("#tabelaBusca > tbody").append("<tr>"  + "<th>" + usuario.id + "</th>" 
+							$("#tabelaBusca > tbody").append('<tr id= '+ usuario.id +'>'  + "<th>" + usuario.id + "</th>" 
 									+ "<td>" + usuario.nome + "</td>"
 									+ "<td>" + usuario.idade + "</td>"
-									+ "<td>" + '<button type="button" onclick="editarUsuario( ' + usuario.id + ');" class="btn btn-success">Abrir</button>' + "</th>" + "</td>")
+									+ "<td>" + '<button type="button" onclick="editarUsuario( ' + usuario.id + ');" class="btn btn-success">Abrir</button>' + "</td>"
+									+ "<td>" + '<button type="button" onclick="deletarUsuario( ' + usuario.id + ');" class="btn btn-warning">Del</button>' + "</td>")
 						});
 					}
 				}).fail(function(xhr, status, errorThrown) {
@@ -171,6 +177,25 @@
 				alert("Erro ao realizar busca por id! " + xhr.reponseText);
 			});
 		};
+		
+		function deletarUsuario(id){
+			
+			if(confirm("Deseja realmente deleta esse usuário?")){
+				$.ajax({
+					method : "DELETE", //definido em requestMapping
+					url : "deleta-usuario", //value da url no springboot
+					data : "idUser=" + id, //nome da variavel name
+					
+					success : function(response) {
+						$('#' + id).remove();	
+						alert(response);
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao realizar busca por id! " + xhr.reponseText);
+				});
+			};
+		};
+		
 	</script>
 
 </body>
